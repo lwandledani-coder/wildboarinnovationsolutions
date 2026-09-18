@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 1500);
         });
-    }
+    
 
     // --- Newsletter Form Submission ---
     if (newsletterForm) {
@@ -338,4 +338,3 @@ document.addEventListener('DOMContentLoaded', () => {
         'font-size: 1rem; color: #1a1a2e;');
     console.log('%cInnovate. Build. Support. — Your trusted technology partner.',
         'color: #636e72; font-style: italic;');
-});
