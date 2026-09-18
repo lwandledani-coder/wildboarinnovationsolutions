@@ -155,25 +155,58 @@ document.addEventListener('DOMContentLoaded', () => {
     animateStats();
 
     // --- Contact Form Submission ---
+    // if (contactForm) {
+    //     contactForm.addEventListener('submit', (e) => {
+    //         e.preventDefault();
+
+    //         // Basic validation
+    //         const firstName = document.getElementById('firstName').value.trim();
+    //         const lastName = document.getElementById('lastName').value.trim();
+    //         const email = document.getElementById('email').value.trim();
+    //         const service = document.getElementById('service').value;
+    //         const message = document.getElementById('message').value.trim();
+
+    //         if (!firstName || !lastName || !email || !service || !message) {
+    //             // Shake animation for empty fields
+    //             contactForm.style.animation = 'shake 0.5s ease';
+    //             setTimeout(() => {
+    //                 contactForm.style.animation = '';
+    //             }, 500);
+    //             return;
+    //         }
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            // Basic validation
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName = document.getElementById('lastName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const service = document.getElementById('service').value;
-            const message = document.getElementById('message').value.trim();
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const originalText = btnText.textContent;
 
-            if (!firstName || !lastName || !email || !service || !message) {
-                // Shake animation for empty fields
-                contactForm.style.animation = 'shake 0.5s ease';
-                setTimeout(() => {
-                    contactForm.style.animation = '';
-                }, 500);
-                return;
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending...';
+
+        try {
+            const formData = new FormData(contactForm);
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                formSuccess.classList.add('show');
+                contactForm.reset();
+                setTimeout(() => formSuccess.classList.remove('show'), 5000);
+            } else {
+                alert('Something went wrong. Please try again or email us directly.');
             }
+        } catch (error) {
+            alert('Network error. Please check your connection and try again.');
+        } finally {
+            submitBtn.disabled = false;
+            btnText.textContent = originalText;
+        }
+    });
+}
 
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
